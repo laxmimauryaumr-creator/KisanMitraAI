@@ -1,0 +1,301 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 25px;
+    font-family: Arial, sans-serif;
+    background: #f1f7ed;
+    color: #243b2a;
+}
+
+h1 {
+    background: #176b3a;
+    color: white;
+    padding: 24px;
+    text-align: center;
+    border-radius: 16px;
+}
+
+h2 {
+    color: #176b3a;
+}
+
+p {
+    text-align: center;
+    font-size: 18px;
+}
+
+label {
+    display: block;
+    margin: 15px 0 8px;
+    font-weight: bold;
+}
+
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #b8cbb8;
+    border-radius: 8px;
+    font-size: 16px;
+    background: white;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+button {
+    background: #176b3a;
+    color: white;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover {
+    background: #0e4d29;
+}
+#answer {
+    background: #f4fbf4;
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid #cde5cd;
+    color: #263b2b;
+    line-height: 1.8;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+#answer h1,
+#answer h2,
+#answer h3 {
+    color: #176b35;
+    margin-top: 18px;
+    margin-bottom: 8px;
+}
+
+#answer ul,
+#answer ol {
+    padding-left: 24px;
+}
+
+#answer li {
+    margin-bottom: 8px;
+}
+
+#answer strong {
+    color: #145b2b;
+}
+
+#answer p {
+    margin-bottom: 12px;
+}
+
+.schemes-section {
+    margin: 25px auto;
+    padding: 20px;
+    border-radius: 16px;
+    background: #f3f8ef;
+    color: #203b25;
+}
+
+.schemes-section h2 {
+    margin-top: 0;
+}
+
+.scheme-card {
+    background: white;
+    padding: 16px;
+    margin-top: 14px;
+    border-radius: 12px;
+    border: 1px solid #d8e6d2;
+}
+
+.scheme-card h3 {
+    margin-top: 0;
+}
+
+.scheme-card a {
+    display: inline-block;
+    margin-top: 8px;
+    color: #176b35;
+    font-weight: bold;
+}
+
+.diary-section {
+    margin: 25px auto;
+    padding: 20px;
+    background: #f3f8ef;
+    border-radius: 16px;
+}
+
+.diary-section input,
+.diary-section textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 8px 0 16px;
+    padding: 12px;
+    border: 1px solid #cbd8c5;
+    border-radius: 8px;
+}
+
+.diary-record {
+    background: white;
+    margin-top: 15px;
+    padding: 14px;
+    border-radius: 10px;
+    overflow-wrap: anywhere;
+}
+
+.mandi-section {
+    margin: 25px auto;
+    padding: 20px;
+    border-radius: 16px;
+    background: #f3f8ef;
+    color: #203b25;
+}
+
+.mandi-section label,
+.mandi-section input,
+.mandi-section select {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0;
+}
+
+.mandi-section input,
+.mandi-section select {
+    padding: 12px;
+    border: 1px solid #cbd8c5;
+    border-radius: 8px;
+    background: white;
+}
+
+.mandi-result-card {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 10px;
+    background: white;
+    overflow-wrap: anywhere;
+}
+
+.farming-calendar {
+    margin: 25px auto;
+    padding: 20px;
+    border-radius: 16px;
+    background: #eef7e9;
+    color: #234329;
+}
+
+.farming-calendar input,
+.farming-calendar select {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 8px 0 16px;
+    padding: 12px;
+    border: 1px solid #cbd8c5;
+    border-radius: 8px;
+    background: white;
+}
+
+.farm-task-card {
+    background: white;
+    padding: 14px;
+    margin-top: 12px;
+    border-radius: 10px;
+    overflow-wrap: anywhere;
+}
+
+.farm-task-card.completed {
+    opacity: 0.7;
+    border-left: 5px solid #36834b;
+}
+
+.farm-task-card button {
+    margin: 6px 6px 0 0;
+}
+
+.soil-section {
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 12px;
+  background: #f1f8e9;
+  border: 1px solid #c5e1a5;
+}
+
+.soil-section label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+.soil-section input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+}
+
+.soil-section button {
+  margin-top: 16px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #2e7d32;
+  color: white;
+  cursor: pointer;
+}
+
+#soilResult {
+  margin-top: 15px;
+  line-height: 1.6;
+}
+
+.eligibility-section {
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid #c5e1a5;
+  border-radius: 12px;
+  background: #f9fbe7;
+}
+
+.eligibility-section label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+.eligibility-section select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 6px;
+}
+
+.eligibility-section button {
+  margin-top: 16px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #2e7d32;
+  color: white;
+  cursor: pointer;
+}
+
+#schemeEligibilityResult {
+  margin-top: 15px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KisanMitra AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <h1>KisanMitra AI 🌱</h1>
+    <p>Aapki fasal, hamari salah!</p>
+
+    <h2>Apni fasal ke baare mein poochhein</h2>
+
+    <label for="crop">Fasal chuniye:</label>
+
+    <select id="crop">
+    <option value="">Fasal chunein</option>
+    <option value="wheat">Gehu (गेहूँ)</option>
+    <option value="soybean">Soybean (सोयाबीन)</option>
+    <option value="rice">Dhaan (धान)</option>
+    <option value="maize">Makka (मक्का)</option>
+    <option value="cotton">Kapas (कपास)</option>
+    <option value="mustard">Sarson (सरसों)</option>
+    <option value="chickpea">Chana (चना)</option>
+    <option value="lentil">Masoor (मसूर)</option>
+</select>
+
+<label for="language">🌐 Apni Bhasha Chunein / Select Language</label>
+
+<select id="language">
+    <option value="hi">हिन्दी — Hindi</option>
+    <option value="en">English — English</option>
+    <option value="bn">বাংলা — Bengali</option>
+    <option value="te">తెలుగు — Telugu</option>
+    <option value="mr">मराठी — Marathi</option>
+    <option value="ta">தமிழ் — Tamil</option>
+    <option value="gu">ગુજરાતી — Gujarati</option>
+    <option value="kn">ಕನ್ನಡ — Kannada</option>
+    <option value="ml">മലയാളം — Malayalam</option>
+    <option value="pa">ਪੰਜਾਬੀ — Punjabi</option>
+    <option value="or">ଓଡ଼ିଆ — Odia</option>
+    <option value="as">অসমীয়া — Assamese</option>
+    <option value="ur">اردو — Urdu</option>
+    <option value="ks">कॉशुर — Kashmiri</option>
+    <option value="ne">नेपाली — Nepali</option>
+</select>
+
+    <p>Apna sawal likhein:</p>
+    <textarea id="question" placeholder="Apni fasal ki problem likhein"></textarea>
+    <button type="button" onclick="startVoiceInput()">Bolkar sawal poochhein</button>
+
+    <br><br>
+    <button type="button"
+    onclick="getAdvice()">Salah paayein</button> 
+
+    <p id="answer"></p>
+    <hr>
+
+<section class="weather-section">
+    <h2>🌦️ Kisan Weather Update</h2>
+    <p>Apne gaon ya shahar ka naam likhein.</p>
+
+    <input
+        type="text"
+        id="city"
+        placeholder="Jaise: Shivpuri"
+    >
+
+    <button type="button"
+    onclick="getWeather()">Mausam Dekhein</button>
+
+    <div id="weatherResult"></div>
+</section>
+    <button type="button"
+    onclick="speakAdvice()">Salah sunein</button>
+
+    <script src="script.js"></script>
+    
+    <section class="disease-section">
+    <h2>📸 Fasal Ki Bimari Pehchanein</h2>
+
+    <p>Fasal ke patte ya prabhavit hisse ki photo upload karein.</p>
+
+    <input
+        type="file"
+        id="cropImage"
+        accept="image/*"
+    >
+
+    <div>
+        <img
+            id="imagePreview"
+            alt="Fasal ki photo preview"
+            style="display:none; max-width:100%; max-height:250px; margin-top:12px; border-radius:12px;"
+        >
+    </div>
+
+    <button type="button" onclick="previewCropImage()">
+        Photo Dekhein
+    </button>
+
+    <button type="button" onclick="analyzeCropImage()">
+        AI Se Bimari Ki Jankari Lein
+    </button>
+
+    <div id="diseaseResult"></div>
+</section>
+
+<section class="schemes-section">
+    <h2>🏛️ Kisan Sarkari Yojanaen</h2>
+    <p>Kisano ke liye upyogi sarkari yojanaon ki jankari.</p>
+
+    <div class="scheme-card">
+        <h3>🌾 PM-KISAN</h3>
+        <p>Patra kisan parivaron ke liye aay sahayata yojana.</p>
+        <a href="https://pmkisan.gov.in/"
+           target="_blank" rel="noopener noreferrer">
+            Official Website Dekhein
+        </a>
+    </div>
+
+    <div class="scheme-card">
+        <h3>🌱 Soil Health Card</h3>
+        <p>Mitti ki jaanch aur poshak tatvon ki jankari.</p>
+        <a href="https://soilhealth.dac.gov.in/"
+           target="_blank" rel="noopener noreferrer">
+            Official Website Dekhein
+        </a>
+    </div>
+
+    <div class="scheme-card">
+        <h3>🌧️ Pradhan Mantri Fasal Bima Yojana</h3>
+        <p>Fasal bima aur yojana se judi jankari.</p>
+        <a href="https://pmfby.gov.in/"
+           target="_blank" rel="noopener noreferrer">
+            Official Website Dekhein
+        </a>
+    </div>
+</section>
+
+<section class="diary-section">
+    <h2>📒 Meri Kisan Diary</h2>
+    <p>Apni kheti ke records yahan likhein.</p>
+
+    <label for="diaryCrop">Fasal ka naam:</label>
+    <input
+        type="text"
+        id="diaryCrop"
+        placeholder="Jaise: Gehu"
+    >
+
+    <label for="diaryDate">Tareekh:</label>
+    <input type="date" id="diaryDate">
+
+    <label for="diaryNotes">Kheti ke notes:</label>
+    <textarea
+        id="diaryNotes"
+        placeholder="Jaise: Aaj sinchai ki..."
+    ></textarea>
+
+    <button type="button" onclick="saveDiary()">
+        Record Save Karein
+    </button>
+
+    <div id="diaryRecords"></div>
+</section>
+
+<section class="mandi-section">
+    <h2>🌾 Live / Latest Mandi Bhav</h2>
+    <p>Apni fasal aur rajya chunein. Bhav ₹/quintal mein dekhein.</p>
+
+    <label for="mandiState">Rajya chunein:</label>
+    <select id="mandiState">
+        <option value="Madhya Pradesh">Madhya Pradesh</option>
+        <option value="Maharashtra">Maharashtra</option>
+        <option value="Uttar Pradesh">Uttar Pradesh</option>
+        <option value="Punjab">Punjab</option>
+        <option value="Karnataka">Karnataka</option>
+    </select>
+
+    <label for="mandiCrop">Fasal ka naam:</label>
+    <input id="mandiCrop" type="text"
+           placeholder="Jaise: Wheat, Soybean, Mustard">
+
+    <button type="button" onclick="getMandiPrices()">
+        Mandi Bhav Dekhein
+    </button>
+
+    <p id="mandiStatus" aria-live="polite"></p>
+    <div id="mandiResults"></div>
+
+    <p>
+        <a href="https://www.data.gov.in/catalog/current-daily-price-various-commodities-various-markets-mandi"
+           target="_blank" rel="noopener noreferrer">
+            Sarkari Data Source
+        </a>
+        |
+        <a href="https://mandi-api.vercel.app/docs"
+           target="_blank" rel="noopener noreferrer">
+            API Documentation
+        </a>
+    </p>
+</section> 
+
+<section class="farming-calendar">
+    <h2>🗓️ Kheti Calendar</h2>
+    <p>Apni kheti ke kaam aur unki tareekh manage karein.</p>
+
+    <label for="farmTask">Kheti ka kaam:</label>
+    <input
+        type="text"
+        id="farmTask"
+        placeholder="Jaise: Gehu ki sinchai"
+    >
+
+    <label for="farmTaskDate">Kaam ki tareekh:</label>
+    <input type="date" id="farmTaskDate">
+
+    <label for="farmTaskCrop">Fasal:</label>
+    <select id="farmTaskCrop">
+        <option value="Gehu">Gehu</option>
+        <option value="Soybean">Soybean</option>
+        <option value="Dhaan">Dhaan</option>
+        <option value="Makka">Makka</option>
+        <option value="Sarson">Sarson</option>
+        <option value="Chana">Chana</option>
+        <option value="Other">Anya</option>
+    </select>
+
+    <button type="button" onclick="addFarmTask()">
+        + Kaam Add Karein
+    </button>
+
+    <h3>📋 Mere Kheti ke Kaam</h3>
+    <div id="farmTaskList"></div>
+</section>
+
+<section class="soil-section">
+  <h2>🌱 Soil Health Assistant</h2>
+  <p>अपनी Soil Health Card की जानकारी भरें।</p>
+
+  <label for="soilPH">मिट्टी का pH:</label>
+  <input
+    type="number"
+    id="soilPH"
+    placeholder="जैसे 6.5"
+    min="0"
+    max="14"
+    step="0.1"
+  />
+
+  <label for="soilN">Nitrogen (N) — कार्ड पर दी गई वैल्यू:</label>
+  <input
+    type="number"
+    id="soilN"
+    placeholder="Nitrogen की वैल्यू"
+    min="0"
+    step="any"
+  />
+
+  <label for="soilP">Phosphorus (P) — कार्ड पर दी गई वैल्यू:</label>
+  <input
+    type="number"
+    id="soilP"
+    placeholder="Phosphorus की वैल्यू"
+    min="0"
+    step="any"
+  />
+
+  <label for="soilK">Potassium (K) — कार्ड पर दी गई वैल्यू:</label>
+  <input
+    type="number"
+    id="soilK"
+    placeholder="Potassium की वैल्यू"
+    min="0"
+    step="any"
+  />
+
+  <button onclick="checkSoilHealth()">
+    मिट्टी की जानकारी समझें
+  </button>
+
+  <div id="soilResult" aria-live="polite"></div>
+</section>
+
+<section class="eligibility-section">
+  <h2>🏛️ Government Scheme Assistant</h2>
+  <p>अपनी जानकारी भरें और योजनाओं की पात्रता जाँचने के लिए मार्गदर्शन पाएँ।</p>
+
+  <label for="farmerState">राज्य:</label>
+  <select id="farmerState">
+    <option value="">राज्य चुनें</option>
+    <option value="mp">मध्य प्रदेश</option>
+    <option value="other">अन्य राज्य</option>
+  </select>
+
+  <label for="farmerLand">क्या आपके पास खेती की जमीन है?</label>
+  <select id="farmerLand">
+    <option value="">विकल्प चुनें</option>
+    <option value="yes">हाँ</option>
+    <option value="no">नहीं</option>
+  </select>
+
+  <label for="farmerCategory">किसान की श्रेणी:</label>
+  <select id="farmerCategory">
+    <option value="">श्रेणी चुनें</option>
+    <option value="small">छोटे/सीमांत किसान</option>
+    <option value="other">अन्य किसान</option>
+    <option value="unknown">पता नहीं</option>
+  </select>
+
+  <button onclick="checkSchemes()">योजनाएँ देखें</button>
+
+  <div id="schemeEligibilityResult" aria-live="polite"></div>
+</section>
+
+</body>
+</html>
