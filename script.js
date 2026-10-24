@@ -12,7 +12,11 @@ async function getAdvice() {
     answer.textContent = "Kisan Mitra AI salah taiyar kar raha hai...";
 
     try {
+<<<<<<< HEAD
         const response = await fetch("https://kisanmitraai-dawp.onrender.com/api/advice", {
+=======
+        const response = await fetch("https://kisanmitraai-dawp.onrender.com/api/crop-image", {
+>>>>>>> 7d1fbbd99cbf847b4b625326e886efd5b08a8301
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
