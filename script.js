@@ -12,7 +12,7 @@ async function getAdvice() {
     answer.textContent = "Kisan Mitra AI salah taiyar kar raha hai...";
 
     try {
-        const response = await fetch("http://localhost:3000/api/advice", {
+        const response = await fetch("https://kisanmitraai-dawp.onrender.com/api/advice", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -240,11 +240,11 @@ async function analyzeCropImage() {
         new Error("Photo read nahi ho payi.")
       );
 
-      reader.readAsDataURL(file);
+       reader.readAsDataURL(file);
     });
-
-    const response = await fetch("http://localhost:3000/api/crop-image", {
-      method: "POST",
+    
+    const response = await fetch("https://kisanmitraai-dawp.onrender.com/api/crop-image", {
+    method: "POST",
       headers: {
         "Content-Type": "application/json"
       },

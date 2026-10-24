@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json({ limit: "8mb"}));
 app.use(express.static("."));
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(require("path").join(__dirname, "index.html"));
 });
 
 const ai = new GoogleGenAI({
@@ -51,7 +51,7 @@ const selectedLanguage = languageNames[language] || "Hindi";
       Reply in simple ${selectedLanguage}.
       Use easy words that farmers can understand.
 
-Give simple, cautious advice in Hindi.
+Give simple, cautious advice in ${selectedLanguage}
 Crop: ${crop}
 Farmer question: ${question}
 Mention when the farmer should consult a local agricultural expert.
