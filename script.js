@@ -244,7 +244,7 @@ async function analyzeCropImage() {
       reader.readAsDataURL(file);
     });
 
-    const response = await fetch("http://localhost:3000/api/crop-image", {
+    const response = await fetch("https://kisanmitraai-dawp.onrender.com/api/crop-image", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
