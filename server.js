@@ -5,6 +5,13 @@ const { GoogleGenAI } = require("@google/genai");
 dotenv.config();console.log("SERVER FILE STARTED");
 
 const app = express();
+
+app.use(cors({
+  origin: "https://adorable-salamander-a5a376.netlify.app",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 app.use(express.json({ limit: "8mb"}));
 app.use(express.static("."));
 app.get("/", (req, res) => {
