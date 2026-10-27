@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors =require("cors");
 const { GoogleGenAI } = require("@google/genai");
 
 dotenv.config();console.log("SERVER FILE STARTED");
