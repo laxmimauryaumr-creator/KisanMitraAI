@@ -275,7 +275,6 @@ async function analyzeCropImage() {
     .replace(/^\s*[-*]\s+/gm, "• ");
     
     result.appendChild(answer);
-
   } catch (error) {
     console.error(error);
     result.textContent =
