@@ -264,17 +264,17 @@ async function analyzeCropImage() {
 
     result.innerHTML = "";
 
-const answer = document.createElement("div");
-answer.style.whiteSpace = "pre-wrap";
-answer.style.lineHeight = "1.6";
-
-// Markdown ke common symbols ko simple text mein badlo
-answer.textContent = (data.answer || "Koi jawab nahi mila.")
-  .replace(/^#{1,6}\s*/gm, "")
-  .replace(/\*\*(.*?)\*\*/g, "$1")
-  .replace(/^\s*[-*]\s+/gm, "• ");
-
-result.appendChild(answer);
+    const answer = document.createElement("div");
+    answer.style.whiteSpace = "pre-wrap";
+    answer.style.lineHeight = "1.6";
+    
+    // Markdown ke common symbols ko simple text mein badlo
+    answer.textContent = (data.answer || "Koi jawab nahi mila.")
+    .replace(/^#{1,6}\s*/gm, "")
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/^\s*[-*]\s+/gm, "• ");
+    
+    result.appendChild(answer);
 
   } catch (error) {
     console.error(error);
