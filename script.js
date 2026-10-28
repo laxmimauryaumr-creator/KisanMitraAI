@@ -231,17 +231,22 @@ async function analyzeCropImage() {
 
   try {
     const base64 = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
+        const reader = new FileReader();
+        
+        reader.onload = () => {
+            if (typeof reader.result !== "string") {
+                reject(new Error("Photo data nahi mil paya."));
+                return;
+        }
+        
         resolve(reader.result.split(",")[1]);
-      };
+        };
+        
+        reader.onerror = () => {
+            reject(new Error("Photo file read nahi ho payi. Dobara photo chunein."));
+       };
 
-      reader.onerror = () => reject(
-        new Error("Photo read nahi ho payi.")
-      );
-
-      reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
     });
 
     const response = await fetch("https://kisanmitraai-dawp.onrender.com/api/crop-image", {
