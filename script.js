@@ -237,9 +237,9 @@ async function analyzeCropImage() {
             if (typeof reader.result !== "string") {
                 reject(new Error("Photo data nahi mil paya."));
                 return;
-        }
+            }
         
-        resolve(reader.result.split(",")[1]);
+            resolve(reader.result.split(",")[1]);
         };
         
         reader.onerror = () => {
