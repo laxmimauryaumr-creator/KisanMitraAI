@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#166534">
+<title>KisanMitraAI - Offline Mode</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #f0fdf4;
+  color: #183b25;
+}
+
+.container {
+  max-width: 850px;
+  margin: auto;
+}
+
+header {
+  background: #166534;
+  color: white;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.status {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 18px 0;
+  text-align: center;
+}
+
+.card {
+  background: white;
+  padding: 18px;
+  margin: 15px 0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #00000010;
+}
+
+h2 {
+  color: #166534;
+}
+
+button {
+  background: #166534;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #64748b;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <h1>🌾 KisanMitraAI</h1>
+  <p>Smart Farming Assistance</p>
+  <h2 style="color:white">Offline Information Center</h2>
+</header>
+
+<div class="status" id="status">
+  You are viewing saved offline information.
+</div>
+
+<div class="card">
+  <h2>🌱 Wheat Farming Guide</h2>
+  <p><b>Soil:</b> Well-drained loamy soil is generally suitable.</p>
+  <p><b>Irrigation:</b> Irrigation should depend on soil moisture and crop stage.</p>
+  <p><b>Important stages:</b> Crown root initiation, tillering, flowering and grain filling.</p>
+  <p><b>Note:</b> Follow local agricultural recommendations for your region.</p>
+</div>
+
+<div class="card">
+  <h2>🌾 Rice Farming Guide</h2>
+  <p>Choose a suitable variety according to your region and season.</p>
+  <p>Maintain appropriate soil moisture and monitor crop health regularly.</p>
+  <p>Use fertilizers according to soil testing and local agricultural advice.</p>
+</div>
+
+<div class="card">
+  <h2>🍃 Yellow Leaves in Crops</h2>
+  <p>Yellow leaves can have several causes, including nutrient deficiency,
+  excess water, insufficient water or disease.</p>
+  <p>Check soil moisture, drainage and affected leaves carefully.</p>
+  <p>Do not apply pesticides or fertilizers without identifying the cause.</p>
+  <p>Contact a local agricultural expert for confirmation.</p>
+</div>
+
+<div class="card">
+  <h2>💧 General Irrigation Advice</h2>
+  <p>Check soil moisture before irrigation.</p>
+  <p>Avoid unnecessary watering and waterlogging.</p>
+  <p>Follow crop-specific irrigation schedules recommended locally.</p>
+</div>
+
+<div class="card">
+  <h2>⚠️ Important Information</h2>
+  <p>This is previously saved general farming information.
+  It is not a live AI diagnosis or verified real-time advisory.</p>
+  <p>Weather, mandi prices and new AI responses require an internet connection.</p>
+</div>
+
+<div class="card">
+  <h2>📡 Internet Connection</h2>
+  <p id="connection">Checking connection...</p>
+  <button onclick="location.reload()">Try Again</button>
+  <button onclick="location.href='./'">Open Homepage</button>
+</div>
+
+<footer>
+  KisanMitraAI | Helping Farmers with Technology 🌾
+</footer>
+
+</div>
+
+<script>
+function updateStatus() {
+  const status = document.getElementById("status");
+  const connection = document.getElementById("connection");
+
+  if (navigator.onLine) {
+    status.textContent = "Internet connection detected. You can return to the main website.";
+    connection.textContent = "Internet is available.";
+  } else {
+    status.textContent = "You are offline. Saved farming information is available below.";
+    connection.textContent = "No internet connection.";
+  }
+}
+
+window.addEventListener("online", updateStatus);
+window.addEventListener("offline", updateStatus);
+updateStatus();
+</script>
+
+</body>
+</html>
