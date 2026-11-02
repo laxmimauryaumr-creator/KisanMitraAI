@@ -32,6 +32,14 @@ async function getAdvice() {
         }
 
         answer.innerHTML = marked.parse(data.answer);
+        await saveOfflineRecord(
+            "ai",
+            "Crop: " + crop,
+            "Question: " + question +
+            "\n\nAnswer:\n" + answer.innerText
+        );
+        
+        await showSavedOfflineData();
     }
     catch (error) {
         console.error("Error:", error);
@@ -178,6 +186,13 @@ async function getWeather() {
             <p>🌧️ Vartaman varsha: ${current.precipitation} mm</p>
             <small>Samay: ${weatherData.current.time.replace("T", " ")}</small>
         `;
+        await saveOfflineRecord(
+            "weather",
+            "Weather: " + place.name,
+            result.innerText
+        );
+
+        await showSavedOfflineData();
     } catch (error) {
         console.error("Weather error:", error);
         result.textContent =
@@ -280,6 +295,13 @@ async function analyzeCropImage() {
     .replace(/^\s*[-*]\s+/gm, "• ");
     
     result.appendChild(answer);
+    await saveOfflineRecord(
+        "disease",
+        "Crop: " + (cropInput.value || "Unknown"),
+        answer.innerText
+    );
+
+    await showSavedOfflineData();
   } catch (error) {
     console.error(error);
     result.textContent =
@@ -417,6 +439,14 @@ async function getMandiPrices() {
 
         status.textContent =
             "Data mil gaya. Rate ki tareekh zaroor check karein.";
+            await saveOfflineRecord(
+            "mandi",
+            "Mandi: " + state + " | Crop: " + crop,
+            "Status: " + status.innerText +
+            "\n\n" + results.innerText
+        );
+
+        await showSavedOfflineData();
     } catch (error) {
         console.error("Mandi API error:", error);
         status.textContent =

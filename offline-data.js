@@ -1,213 +1,224 @@
-/* =====================================
-   KisanMitraAI - Offline Data Manager
-   Saves previous AI, weather and mandi data
-===================================== */
+/* ==========================================
+   KisanMitraAI - Complete Offline Data System
+   AI History + Weather + Mandi + Crop Diagnosis
+========================================== */
 
-const DB_NAME = "KisanMitraOfflineDB";
-const DB_VERSION = 1;
-const STORE_NAME = "savedData";
+const KISAN_DB = "KisanMitraAI_Offline";
+const KISAN_DB_VERSION = 1;
+const KISAN_STORE = "records";
 
-let offlineDB = null;
+let kisanDB = null;
 
-function openOfflineDB() {
+// 1. Open IndexedDB
+function openKisanDB() {
     return new Promise((resolve, reject) => {
-        if (!("indexedDB" in window)) {
-            reject(new Error("IndexedDB is not supported"));
+        if (!window.indexedDB) {
+            reject(new Error("IndexedDB unavailable"));
             return;
         }
 
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        if (kisanDB) {
+            resolve(kisanDB);
+            return;
+        }
+
+        const request = indexedDB.open(
+            KISAN_DB,
+            KISAN_DB_VERSION
+        );
 
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
 
-            if (!db.objectStoreNames.contains(STORE_NAME)) {
-                db.createObjectStore(STORE_NAME, {
-                    keyPath: "key"
+            if (!db.objectStoreNames.contains(KISAN_STORE)) {
+                const store = db.createObjectStore(
+                    KISAN_STORE,
+                    { keyPath: "id", autoIncrement: true }
+                );
+
+                store.createIndex("type", "type", {
+                    unique: false
+                });
+
+                store.createIndex("savedAt", "savedAt", {
+                    unique: false
                 });
             }
         };
 
         request.onsuccess = () => {
-            offlineDB = request.result;
-            resolve(offlineDB);
+            kisanDB = request.result;
+            resolve(kisanDB);
         };
 
         request.onerror = () => reject(request.error);
     });
 }
 
-// Save data in browser permanently until cleared
-async function saveOfflineData(key, title, content) {
+// 2. Save information
+async function saveOfflineRecord(type, title, content) {
     if (!content || !content.trim()) return;
 
     try {
-        const db = offlineDB || await openOfflineDB();
+        const db = await openKisanDB();
 
         return new Promise((resolve, reject) => {
             const transaction = db.transaction(
-                STORE_NAME, "readwrite"
+                KISAN_STORE,
+                "readwrite"
             );
 
-            transaction.objectStore(STORE_NAME).put({
-                key,
+            transaction.objectStore(KISAN_STORE).add({
+                type,
                 title,
                 content: content.trim(),
-                updatedAt: new Date().toISOString()
+                savedAt: new Date().toISOString()
             });
 
             transaction.oncomplete = resolve;
             transaction.onerror = () => reject(transaction.error);
         });
+
     } catch (error) {
-        console.error("Offline save failed:", error);
+        console.error("Offline save error:", error);
     }
 }
 
-// Read saved information
-async function getOfflineData(key) {
+// 3. Read all saved records
+async function getAllOfflineRecords() {
     try {
-        const db = offlineDB || await openOfflineDB();
+        const db = await openKisanDB();
 
         return new Promise((resolve, reject) => {
             const request = db.transaction(
-                STORE_NAME, "readonly"
-            ).objectStore(STORE_NAME).get(key);
+                KISAN_STORE,
+                "readonly"
+            ).objectStore(KISAN_STORE).getAll();
 
-            request.onsuccess = () => resolve(request.result || null);
+            request.onsuccess = () => {
+                const records = request.result || [];
+
+                records.sort((a, b) =>
+                    new Date(b.savedAt) - new Date(a.savedAt)
+                );
+
+                resolve(records);
+            };
+
             request.onerror = () => reject(request.error);
         });
+
     } catch (error) {
-        console.error("Offline read failed:", error);
-        return null;
+        console.error("Offline read error:", error);
+        return [];
     }
 }
 
-// Show saved information in a separate section
-async function showSavedOfflineData() {
-    const panel = document.getElementById("offlineSavedData");
-    if (!panel) return;
+// 4. Delete a saved record
+async function deleteOfflineRecord(id) {
+    try {
+        const db = await openKisanDB();
 
-    const keys = [
-        ["ai", "🤖 Previously Saved AI Advice"],
-        ["weather", "🌦️ Last Saved Weather"],
-        ["mandi", "🌾 Last Saved Mandi Prices"]
-    ];
-
-    let html = "";
-
-    for (const [key, title] of keys) {
-        const item = await getOfflineData(key);
-
-        if (item) {
-            const safeContent = document.createElement("div");
-            safeContent.textContent = item.content;
-
-            const safeDate = new Date(item.updatedAt);
-            const dateText = safeDate.toLocaleString();
-
-            html += `
-                <div class="offline-saved-card"
-                     style="background:#f0fdf4;padding:15px;
-                     margin:12px 0;border-radius:10px;
-                     border:1px solid #bbf7d0;">
-                    <h3>${title}</h3>
-                    <div class="saved-content"></div>
-                    <small>Last saved: ${dateText}</small>
-                </div>
-            `;
-
-            // Content is inserted safely below
-            panel.insertAdjacentHTML(
-                "beforeend",
-                html.substring(0, html.lastIndexOf("</div>") + 6)
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction(
+                KISAN_STORE,
+                "readwrite"
             );
 
-            const cards = panel.querySelectorAll(".offline-saved-card");
-            cards[cards.length - 1]
-                .querySelector(".saved-content")
-                .textContent = item.content;
+            transaction.objectStore(KISAN_STORE).delete(id);
 
-            html = "";
-        }
-    }
+            transaction.oncomplete = resolve;
+            transaction.onerror = () => reject(transaction.error);
+        });
 
-    if (!panel.children.length) {
-        panel.textContent = "Abhi tak koi information save nahi hui hai. Internet ON karke website use karein.";
+    } catch (error) {
+        console.error("Delete error:", error);
     }
 }
 
-// Automatically save changes from existing website
-function observeOfflineOutput(elementId, key, title) {
-    const element = document.getElementById(elementId);
+// 5. Display saved information
+async function showSavedOfflineData() {
+    const panel = document.getElementById("offlineSavedData");
 
-    if (!element) return;
+    if (!panel) return;
 
-    let previousText = "";
-    let saveTimer;
+    const records = await getAllOfflineRecords();
 
-    const saveCurrentContent = () => {
-        const text = element.innerText || element.textContent || "";
-        const cleanText = text.trim();
+    panel.replaceChildren();
 
-        if (
-            cleanText.length < 10 ||
-            cleanText === previousText ||
-            !navigator.onLine
-        ) return;
+    const categories = [
+        { type: "ai", name: "🤖 Saved AI Answers" },
+        { type: "weather", name: "🌦️ Saved Weather" },
+        { type: "mandi", name: "🌾 Saved Mandi Prices" },
+        { type: "disease", name: "🍃 Saved Crop Diagnosis" }
+    ];
 
-        // Ignore common loading messages
-        if (/taiyar kar raha hai|analyzing|loading|please wait/i.test(cleanText)) {
+    categories.forEach(category => {
+        const heading = document.createElement("h3");
+        heading.textContent = category.name;
+        panel.appendChild(heading);
+
+        const matching = records.filter(
+            record => record.type === category.type
+        );
+
+        if (!matching.length) {
+            const empty = document.createElement("p");
+            empty.textContent = "Abhi koi data save nahi hai.";
+            panel.appendChild(empty);
             return;
         }
 
-        previousText = cleanText;
+        matching.forEach(record => {
+            const card = document.createElement("div");
 
-        clearTimeout(saveTimer);
+            card.style.cssText =
+                "background:#f0fdf4;padding:14px;margin:10px 0;" +
+                "border-radius:10px;border:1px solid #bbf7d0;";
 
-        saveTimer = setTimeout(() => {
-            saveOfflineData(key, title, cleanText);
-        }, 1500);
-    };
+            const title = document.createElement("h4");
+            title.textContent = record.title;
 
-    const observer = new MutationObserver(saveCurrentContent);
+            const content = document.createElement("p");
+            content.textContent = record.content;
+            content.style.whiteSpace = "pre-wrap";
 
-    observer.observe(element, {
-        childList: true,
-        subtree: true,
-        characterData: true
+            const date = document.createElement("small");
+            date.textContent =
+                "Last saved: " +
+                new Date(record.savedAt).toLocaleString();
+
+            const remove = document.createElement("button");
+            remove.textContent = "Delete";
+            remove.type = "button";
+
+            remove.addEventListener("click", async () => {
+                await deleteOfflineRecord(record.id);
+                await showSavedOfflineData();
+            });
+
+            card.append(title, content, date, document.createElement("br"), remove);
+            panel.appendChild(card);
+        });
     });
 
-    // Also check existing content
-    saveCurrentContent();
+    const refresh = document.createElement("button");
+    refresh.textContent = "Refresh Saved Information";
+    refresh.type = "button";
+    refresh.onclick = showSavedOfflineData;
+
+    panel.appendChild(refresh);
 }
 
-// Start offline manager
-async function initializeOfflineManager() {
+// 6. Initialize offline data
+document.addEventListener("DOMContentLoaded", async () => {
     try {
-        await openOfflineDB();
-
-        // Save outputs from existing script.js
-        observeOfflineOutput(
-            "answer", "ai", "AI Advice"
-        );
-
-        observeOfflineOutput(
-            "weatherResult", "weather", "Weather"
-        );
-
-        observeOfflineOutput(
-            "mandiResults", "mandi", "Mandi Prices"
-        );
-
-        // Show previously saved information
+        await openKisanDB();
         await showSavedOfflineData();
 
-    } catch (error) {
-        console.error("Offline manager error:", error);
-    }
-}
+        console.log("KisanMitraAI offline database ready.");
 
-window.addEventListener("DOMContentLoaded", () => {
-    initializeOfflineManager();
+    } catch (error) {
+        console.error("Offline database initialization failed:", error);
+    }
 });
